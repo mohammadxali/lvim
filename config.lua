@@ -30,7 +30,6 @@ lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- or vim.keymap.set("n", "<C-q>", ":q<cr>" )
 lvim.keys.visual_mode["K"] = "%"
 lvim.keys.visual_block_mode["K"] = "%"
--- Setup keymaps
 lvim.keys.visual_mode["gh"] = require("hover").hover;
 lvim.keys.visual_mode["gH"] = require("hover").hover_select;
 
