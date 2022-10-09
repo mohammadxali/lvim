@@ -12,7 +12,7 @@ an executable
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "tokyonight"
-lvim.transparent_window = true
+-- lvim.transparent_window = true
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -28,8 +28,11 @@ lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 
 -- override a default keymapping
 -- or vim.keymap.set("n", "<C-q>", ":q<cr>" )
-lvim.keys.visual_mode["K"] = "%" 
-lvim.keys.visual_block_mode["K"] = "%" 
+lvim.keys.visual_mode["K"] = "%"
+lvim.keys.visual_block_mode["K"] = "%"
+-- Setup keymaps
+lvim.keys.visual_mode["gh"] = require("hover").hover;
+lvim.keys.visual_mode["gH"] = require("hover").hover_select;
 
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
@@ -93,10 +96,7 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- generic LSP settings
 
 -- -- make sure server will always be installed even if the server is in skipped_servers list
-lvim.lsp.installer.setup.ensure_installed = {
-    "sumeko_lua",
-    "jsonls",
-}
+-- lvim.lsp.installer.setup.ensure_installed = { "sumeko_lua", "jsonls", }
 -- -- change UI setting of `LspInstallInfo`
 -- -- see <https://github.com/williamboman/nvim-lsp-installer#default-configuration>
 -- lvim.lsp.installer.setup.ui.check_outdated_servers_on_open = false
@@ -167,21 +167,42 @@ formatters.setup {
 
 -- Additional Plugins
 lvim.plugins = {
-    {"folke/tokyonight.nvim"},
-    {
-      "folke/trouble.nvim",
-      cmd = "TroubleToggle",
-    },
-    {
-      "michaeljsmith/vim-indent-object"
-    },
-    {
-      "tpope/vim-surround",
-      -- make sure to change the value of `timeoutlen` if it's not triggering correctly, see https://github.com/tpope/vim-surround/issues/117
-      -- setup = function()
-        --  vim.o.timeoutlen = 500
-      -- end
-    },
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
+  {
+    "michaeljsmith/vim-indent-object"
+  },
+  {
+    "tpope/vim-surround",
+    -- make sure to change the value of `timeoutlen` if it's not triggering correctly, see https://github.com/tpope/vim-surround/issues/117
+    -- setup = function()
+    --  vim.o.timeoutlen = 500
+    -- end
+  },
+  {
+    "lewis6991/hover.nvim",
+    config = function()
+      require("hover").setup {
+        init = function()
+          -- Require providers
+          require("hover.providers.lsp")
+          -- require('hover.providers.gh')
+          -- require('hover.providers.jira')
+          -- require('hover.providers.man')
+          -- require('hover.providers.dictionary')
+        end,
+        preview_opts = {
+          border = nil,
+        },
+        -- Whether the contents of a currently open hover window should be moved
+        -- to a :h preview-window when pressing the hover keymap.
+        preview_window = false,
+        title = true
+      }
+    end
+  }
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
